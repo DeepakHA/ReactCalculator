@@ -3,7 +3,9 @@ import Button from "./Button";
 import { useState } from "react";
 
 export default function Calculator() {
-    const [expression, setExpression] = useState("");
+    const [previous, setPrevious] = useState("");
+    const [current, setCurrent] = useState("");
+    const [operator, setOperator] = useState("");
 
     function handleClearEntry() {
         // Will implement later
@@ -11,25 +13,56 @@ export default function Calculator() {
     }
 
     function handleDelete() {
-        setExpression((prev) => prev.slice(0, -1));
+        setCurrent((prev) => prev.slice(0, -1));
     }
 
     function handleClick(value) {
-        setExpression((prev) => prev + value);
+        if (['+', '-', '*', '/'].includes(value)) {
+            setPrevious(current);
+            setCurrent("");
+            setOperator(value);
+        } else {
+            setCurrent((prev) => prev + value);
+        }
     }
 
     function handleClear() {
-        setExpression("");
+        setPrevious("");
+        setOperator("");
+        setCurrent("");
     }
 
     function handleCalculate() {
-       const result = eval(expression);
-       setExpression(result.toString());
-    }
+        if (!previous || !current || !operator) return;
 
+        const a = Number(previous);
+        const b = Number(current);
+
+        let result;
+        switch (operator) {
+            case "+":
+                result = a + b;
+                break;
+            case "-":
+                result = a - b;
+                break;
+            case "*":
+                result = a * b;
+                break;
+            case "/":
+                result = b === 0 ? "Error" : a / b;
+                break;
+            default:
+                return;
+        }
+
+        setCurrent(result.toString());
+        setPrevious("");
+        setOperator("");
+    };
     return (
         <div className="calculator">
-            <Display value={expression || "0"} />
+            <Display previous={previous} current={current} operator={operator} />
 
             <div className="buttons">
                 <Button key="CE" label="CE" onClick={handleClearEntry} />

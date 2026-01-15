@@ -33,6 +33,18 @@
   align-items: flex-end;
 }
 
+.display-previous {
+  font-size: 14px;
+  opacity: 0.7;
+  text-align: right;
+}
+
+.display-current {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: right;
+}
+
 .buttons{
   display: grid;
   grid-template-columns: repeat(4, 1fr);

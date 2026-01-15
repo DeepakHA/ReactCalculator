@@ -8,8 +8,10 @@ A simple, functional calculator application built with React and Vite.
 - Clear (C) button to reset the calculator
 - Delete (DEL) button to remove the last entered digit
 - Clear Entry (CE) button for future implementation
-- Real-time display of expressions and results
+- Operator display format showing "number operator" (e.g., "3 +")
+- Division by zero error handling
 - Clean, responsive user interface
+- Optimized state management for accurate calculations
 
 ## Project Structure
 
@@ -93,21 +95,40 @@ npm run lint
 - **Vite** (^7.2.4) - Build tool and dev server
 - **ESLint** (^9.39.1) - Code quality tool
 
+### React Features Used
+
+- **Hooks:**
+  - `useState` - Manages calculator state (previous, current, operator)
+- **Functional Components** - All components are function-based
+- **Props** - Component communication through props (label, onClick, className)
+- **Event Handling** - onClick events for button interactions
+- **Conditional Rendering** - Display format based on state values
+- **Component Composition** - Reusable Button and Display components
+
 ## How It Works
 
-The calculator uses React hooks (`useState`) to manage the expression state. Users can:
+The calculator uses React hooks (`useState`) to manage state separately for:
+- `previous`: The first operand
+- `current`: The second operand being entered
+- `operator`: The selected arithmetic operator
 
-1. **Enter numbers and operators** by clicking buttons
-2. **View the expression** in the display
-3. **Delete the last character** using the DEL button
-4. **Clear the entire expression** using the C button
-5. **Calculate the result** by clicking the equals (=) button
+### Calculation Flow
+
+1. **User enters a number** → stored in `current` state
+2. **User clicks an operator** → `current` is moved to `previous`, `current` is cleared, operator is stored
+3. **User enters another number** → stored in `current` state
+4. **User clicks equals (=)** → performs calculation using previous, current, and operator
+5. **Result is displayed** → shown in `current` and previous/operator states are cleared
+
+### Operator Display Format
+
+When an operator is pressed, the display shows the format "number operator" (e.g., "3 +" or "25 *") for clear visual feedback.
 
 ### Components
 
-- **Calculator.jsx**: Handles state management and button layout
-- **Display.jsx**: Shows the current expression or result
-- **Button.jsx**: Reusable button component
+- **Calculator.jsx**: Handles state management (previous, current, operator), button layout, and calculation logic with division by zero handling
+- **Display.jsx**: Shows the current operand, previous operand, and operator
+- **Button.jsx**: Reusable button component that passes label to onClick handler
 
 ## Future Improvements
 
