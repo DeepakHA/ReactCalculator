@@ -1,45 +1,59 @@
 import Display from "./Display";
 import Button from "./Button";
+import { useState } from "react";
 
 export default function Calculator() {
-    function handleClick(label) {
-        console.log("Button clicked:", label);
+    const [expression, setExpression] = useState("");
+
+    function handleClearEntry() {
+        // Will implement later
+        console.log("Clear Entry button clicked");
+    }
+
+    function handleDelete() {
+        setExpression((prev) => prev.slice(0, -1));
+    }
+
+    function handleClick(value) {
+        setExpression((prev) => prev + value);
     }
 
     function handleClear() {
-        console.log("Clear button clicked");
+        setExpression("");
     }
 
     function handleCalculate() {
-        console.log("Calculate button clicked");
+       const result = eval(expression);
+       setExpression(result.toString());
     }
 
     return (
         <div className="calculator">
-            <Display value={0} />
+            <Display value={expression || "0"} />
 
             <div className="buttons">
-                {['%', 'CE', 'C', 'DEL',].map(item => (
+                <Button key="CE" label="CE" onClick={handleClearEntry} />
+                <Button key="C" label="C" onClick={handleClear} />
+                <Button key="DEL" label="DEL" onClick={handleDelete} />
+                <Button key="/" label="/" onClick={handleClick} />
+
+                {['7', '8', '9', '*',].map(item => (
                     <Button key={item} label={item} onClick={handleClick} />
                 ))}
 
-                {['7', '8', '9', '/',].map(item => (
+                {['4', '5', '6', '-',].map(item => (
                     <Button key={item} label={item} onClick={handleClick} />
                 ))}
 
-                {['4', '5', '6', '*',].map(item => (
+                {['1', '2', '3', '+'].map(item => (
                     <Button key={item} label={item} onClick={handleClick} />
                 ))}
 
-                {['1', '2', '3', '-',].map(item => (
+                {['0', '.',].map(item => (
                     <Button key={item} label={item} onClick={handleClick} />
                 ))}
 
-                {['0', '.', '+'].map(item => (
-                    <Button key={item} label={item} onClick={handleClick} />
-                ))}
-
-                <Button label="=" onClick={handleCalculate} />
+                <Button className="btnEqual" label="=" onClick={handleCalculate} />
 
             </div>
         </div>
